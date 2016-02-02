@@ -4,8 +4,9 @@ const app = require('express')();
 const PORT = process.env.PORT || 3000;
 
 app.get('/hello', (req, res) => {
- const msg = `<h1>Hello World!</h1>
-<h2>Goodbye World!</h2>`;
+  const name = req.query.name || 'World';
+  const msg = `<h1>Hello ${name}!</h1>
+<h2>Goodbye ${name}!</h2>`;
 
   res.writeHead(200, {
     'Content-Type': 'text/html'
@@ -28,6 +29,13 @@ app.get('/random', (req, res) => {
   res.send(Math.random().toString());
 });
 
+app.get('/random/:min/:max', (req, res) => {
+  const min = req.params.min;
+  const max = req.params.max;
+
+  res.send(getRandomInt(+min, +max).toString());
+});
+
 app.all('*', (req, res) => {
   res
     .status(403)
@@ -37,3 +45,9 @@ app.all('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Node.js server started. Listening on port ${PORT}`);
 });
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+// Returns a random integer between min (included) and max (excluded)
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}

@@ -36,7 +36,7 @@ app.get('/random/:min/:max', (req, res) => {
   res.send(getRandomInt(+min, +max).toString());
 });
 
-app.all('*', (req, res) => {
+app.get('/secret', (req, res) => {
   res
     .status(403)
     .send('Access Denied!');

@@ -25,12 +25,13 @@ app.get('/hello', (req, res) => {
 });
 
 app.get('/random', (req, res) => {
-  res.end(Math.random().toString());
+  res.send(Math.random().toString());
 });
 
 app.all('*', (req, res) => {
-  res.writeHead(403);
-  res.end('Access Denied!');
+  res
+    .status(403)
+    .send('Access Denied!');
 });
 
 app.listen(PORT, () => {

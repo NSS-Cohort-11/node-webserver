@@ -1,7 +1,40 @@
 'use strict';
 
 const app = require('express')();
+const bodyParser = require('body-parser');
+const upload = require('multer')({ dest: 'tmp/uploads' });
+
 const PORT = process.env.PORT || 3000;
+
+app.set('view engine', 'jade');
+
+app.locals.title = 'THE Super Cool App';
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/', (req, res) => {
+  res.render('index', {
+    date: new Date
+  });
+});
+
+app.get('/contact', (req, res) => {
+  res.render('contact');
+});
+
+app.post('/contact', (req, res) => {
+  const name = req.body.name;
+
+  res.send(`<h1>Thanks for contacting us ${name}</h1>`);
+});
+
+app.get('/sendphoto', (req, res) => {
+  res.render('sendphoto');
+});
+
+app.post('/sendphoto', upload.single('image'), (req, res) => {
+  res.send('<h1>Thanks for sending us your photo</h1>');
+});
 
 app.get('/hello', (req, res) => {
   const name = req.query.name || 'World';
